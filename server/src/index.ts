@@ -52,7 +52,7 @@ client.login(process.env.BOT_CODE).then((e)=>{
   });
 }).catch(e=>{
 
-  console.error("big error", e)
+  console.error("Big error ", e)
 });
 
 

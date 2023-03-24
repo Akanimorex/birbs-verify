@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import axios from "axios";
+import TwitterTask from "./components/TwitterTask";
 
 
 
@@ -14,7 +15,7 @@ export default function App() {
 
 
   const [username, setUsername] = useState("");
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState("");
 
 
   const handleSubmit = async (e) => {
@@ -50,15 +51,38 @@ export default function App() {
           </i>
         </div>
         <div className='Activation-box'>
-          <button className='Buttons'>Join Discord</button>
-          <form onSubmit={handleSubmit}>
-            <input type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <button type="submit">Check</button>
-            <p>{console.log(result)}</p>
-          </form>
+
+          {/* <div>
+            <button className='Buttons'>Join Discord</button>
+            <form onSubmit={handleSubmit}>
+              <input type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <button type="submit">Check</button>
+              <p>{console.log(result)}</p>
+            </form>
+          </div> */}
+          {
+            result.success?(
+            <div>
+                <TwitterTask/>
+            </div>):
+            (
+            <div>
+              <button className='Buttons'>Join Discord</button>
+              <form onSubmit={handleSubmit}>
+                <input type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <button type="submit">Check</button>
+                <p>{console.log(result)}</p>
+              </form>
+            </div>
+            )
+          }
+
         </div>
       </header>
     </div>
