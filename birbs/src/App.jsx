@@ -71,7 +71,7 @@ export default function App() {
             (
             <div>
               <button className='Buttons'>Join Discord</button>
-              <form onSubmit={handleSubmit}>
+              <form className="Discord-form" onSubmit={handleSubmit}>
                 <input type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}

@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import '../App.css';
 
 const  TwitterTask =()=> {
 
     return (
-      <div>TwitterTask</div>
+      <div>
+        <p>You're in!</p>
+        <p>Up next is the Twitter Task</p>
+        <p>Follow the twitter profile, like and retweet the post</p>
+        
+      </div>
     )
   
 };
