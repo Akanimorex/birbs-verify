@@ -3,6 +3,8 @@ const app = express();
 import { config } from 'dotenv';
 import { Client, GatewayIntentBits } from 'discord.js';
 import cors from 'cors';
+const Twitter = require('twitter-lite');
+
 config({path:"./vars/.env"});
 
 app.use(cors())
@@ -13,12 +15,49 @@ app.use(cors())
  * 
  */
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const twitterClient = new Twitter(
+  {
+    consumer_key:process.env.TWITTER_API_KEY,
+    consumer_secret:process.env.TWITTER_API_KEY_SCRET,
+    access_token_key:process.env.TWITTER_ACCESS_TOKEN,
+    access_token_secret:process.env.TWITTER_ACCESS_TOKEN_SECRET
+  }
+)
+
 const port = 3001;
 
-console.log(process.env.BOT_CODE, "env code")
+console.log(process.env.BOT_CODE, "env code");
+console.log(process.env.TWITTER_API_KEY, "twitter env code");
+
+//twitter verifiication
+
+// API endpoint to check if user has followed a Twitter handle
+app.get('/api/check-follow', async (req, res) => {
+  const sourceUser = req.query.sourceUser;
+  const targetUser = req.query.targetUser;
+
+  try {
+    // Make API request to check friendship status
+    const response = await twitterClient.get('friendships/show', {
+      source_screen_name: sourceUser,
+      target_screen_name: targetUser,
+    });
+
+    // Check if source user is following target user
+    if (response.relationship.source.following) {
+      res.json({ followed: true });
+    } else {
+      res.json({ followed: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to check follow status' });
+  }
+});
 
 
 
+//discord verification
 client.on('ready', () => {
   if (client.user) {
     console.log(`Logged in as ${client.user.tag}!`);
