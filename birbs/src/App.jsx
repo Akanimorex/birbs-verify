@@ -14,11 +14,55 @@ import TwitterTask from "./components/TwitterTask";
 export default function App() {
 
 
+
   const [username, setUsername] = useState("");
   const [result, setResult] = useState("");
+  const [sourceUser, setSourceUser] = useState("");
+  const [followed, setFollowed] = useState(false);
+  const [accessToken, setAccessToken]= useState("")
 
 
-  const handleSubmit = async (e) => {
+  //for twitter check
+
+  const handleSignIn = async ()=>{
+    // console.log(response.data)
+    // setAccessToken(response.data.access_token);
+    try{
+      // const response = await axios.post("http://127.0.0.1:3001/api/access_token");
+      window.open(
+        `https://api.twitter.com/oauth/authorize`,
+        "_blank",
+        "width=600,height=600"
+      );
+
+    } catch (error){
+      console.log(error)
+    }
+  }
+
+  const verifyTwitter = async (e)=>{
+    const targetUser = 'skaterBirdsNFT';
+    e.preventDefault();
+    console.log(sourceUser);
+
+
+    try {
+      // Make API request to check follow status
+      const response = await axios.get(`http://127.0.0.1:3001/api/check-follow?sourceUser=${sourceUser}&targetUser=${targetUser}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  }
+
+
+
+
+  //for discord check
+
+
+  const verifyDiscord = async (e) => {
     e.preventDefault();
     console.log(username, "submit")
     try {
@@ -54,7 +98,7 @@ export default function App() {
 
           {/* <div>
             <button className='Buttons'>Join Discord</button>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={verifyDiscord}>
               <input type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -66,18 +110,18 @@ export default function App() {
           {
             result.success?(
             <div>
-                <TwitterTask/>
+                <TwitterTask verifyTwitter={verifyTwitter} followed={followed} sourceUser={sourceUser} setSourceUser={setSourceUser} handleSignIn={handleSignIn} />
             </div>):
             (
             <div>
               <button className='Buttons'>Join Discord</button>
-              <form className="Discord-form" onSubmit={handleSubmit}>
+              <form className="Discord-form" onSubmit={verifyDiscord}>
                 <input type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
                 <button type="submit">Check</button>
-                <p>{console.log(result)}</p>
+                {/* <p>{console.log(result)}</p> */}
               </form>
             </div>
             )
